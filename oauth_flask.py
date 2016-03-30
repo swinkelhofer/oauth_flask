@@ -88,7 +88,7 @@ class OAuth:
 		r = r.json()
 		logger.info("\tOAuth User Meta\n" + json.dumps(r, indent=4))
 		try:
-			if (role == 'admin' and r[self.usermeta_variable_mapping['is_admin']] == True) or (role == "all" and not r[self.usermeta_variable_mapping['is_admin']]):
+			if (role == 'admin' and r[self.usermeta_variable_mapping['is_admin']] == True) or (role == "all" and r[self.usermeta_variable_mapping['is_admin']]):
 				u = User()
 				u.username = r[self.usermeta_variable_mapping['username']]
 				u.is_admin = r[self.usermeta_variable_mapping['is_admin']]
@@ -99,6 +99,7 @@ class OAuth:
 				u = None
 		except:
 			u = None
+                print u
 		return u
 
 	def is_oauth_session(self):
