@@ -6,6 +6,7 @@ import sys
 import logging
 import random
 import string
+import pprint
 
 logging.getLogger('requests').setLevel(logging.WARNING)
 logging.getLogger('werkzeug').setLevel(logging.WARNING)
@@ -16,7 +17,7 @@ class User:
 	username = None
 	fullname = None
 	email = None
-	is_admin = False
+	is_admin = None
 	cookie = None
 
 class OAuth:
@@ -99,7 +100,7 @@ class OAuth:
 				u = None
 		except:
 			u = None
-                print u
+			print u
 		return u
 
 	def is_oauth_session(self):
@@ -132,7 +133,10 @@ class OAuth:
 			return resp
 
 	def revoke_token(self):
-		r = requests.post(self.oauth_revoke_path, headers={ 'Authorization': 'Bearer '+request.cookies.get('access_token') }, data={'token': request.cookies.get('access_token')})
+		try:
+			r = requests.post(self.oauth_revoke_path, headers={ 'Authorization': 'Bearer '+request.cookies.get('access_token') }, data={'token': request.cookies.get('access_token')})
+		except:
+			logger.info("\tOAuth Revoke Error: Could not find cookie")
 		try:
 			logger.info("\tOAuth Revoke Response\n" + json.dumps(r.json(), indent=4))
 		except:
@@ -173,9 +177,12 @@ class OAuth:
 			@wraps(function)
 			def wrapper(*args, **kwargs):
 				try:
-					u = handler.validate_token(request.cookies.get('access_token'))
+					u = self.validate_token(request.cookies.get('access_token'))
 				except:
 					u = User()
+				print "USER"
+				pp = pprint.PrettyPrinter(indent=4)
+				pp.pprint(u.is_admin)
 				if u and role == 'admin' and u.is_admin == True:
 					return function(*args, **kwargs)
 				elif u and role == 'all' and u.is_admin != None:
