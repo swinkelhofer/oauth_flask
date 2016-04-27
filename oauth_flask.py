@@ -6,7 +6,6 @@ import sys
 import logging
 import random
 import string
-import pprint
 
 logging.getLogger('requests').setLevel(logging.WARNING)
 logging.getLogger('werkzeug').setLevel(logging.WARNING)
@@ -100,7 +99,6 @@ class OAuth:
 				u = None
 		except:
 			u = None
-			print u
 		return u
 
 	def is_oauth_session(self):
@@ -180,9 +178,6 @@ class OAuth:
 					u = self.validate_token(request.cookies.get('access_token'))
 				except:
 					u = User()
-				print "USER"
-				pp = pprint.PrettyPrinter(indent=4)
-				pp.pprint(u.is_admin)
 				if u and role == 'admin' and u.is_admin == True:
 					return function(*args, **kwargs)
 				elif u and role == 'all' and u.is_admin != None:
