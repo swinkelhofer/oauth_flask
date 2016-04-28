@@ -88,15 +88,15 @@ class OAuth:
 		r = r.json()
 		logger.info("\tOAuth User Meta\n" + json.dumps(r, indent=4))
 		try:
-			if (role == 'admin' and r[self.usermeta_variable_mapping['is_admin']] == True) or (role == "all" and r[self.usermeta_variable_mapping['is_admin']]):
-				u = User()
-				u.username = r[self.usermeta_variable_mapping['username']]
-				u.is_admin = r[self.usermeta_variable_mapping['is_admin']]
-				u.email = r[self.usermeta_variable_mapping['email']]
-				u.fullname = r[self.usermeta_variable_mapping['fullname']]
-				u.cookie = access_token
-			else:
-				u = None
+			# if (role == 'admin' and r[self.usermeta_variable_mapping['is_admin']] == True) or (role == "all" and r[self.usermeta_variable_mapping['is_admin']]):
+			u = User()
+			u.username = r[self.usermeta_variable_mapping['username']]
+			u.is_admin = r[self.usermeta_variable_mapping['is_admin']]
+			u.email = r[self.usermeta_variable_mapping['email']]
+			u.fullname = r[self.usermeta_variable_mapping['fullname']]
+			u.cookie = access_token
+			# else:
+			#	u = None
 		except:
 			u = None
 		return u
