@@ -1,4 +1,5 @@
-#Flask License
+Flask License
+============
 
 Copyright (c) 2015 by Armin Ronacher and contributors. See AUTHORS for more details.
 
