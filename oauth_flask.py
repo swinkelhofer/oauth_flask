@@ -180,7 +180,7 @@ class OAuth:
 					u = User()
 				if u and role == 'admin' and u.is_admin == True:
 					return function(*args, **kwargs)
-				elif u and role == 'all' and u.is_admin != None:
+				elif u and role == 'all':
 					return function(*args, **kwargs)
 				else:
 					return redirect(self.client_uri, 301)
