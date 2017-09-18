@@ -91,7 +91,10 @@ class OAuth:
 			# if (role == 'admin' and r[self.usermeta_variable_mapping['is_admin']] == True) or (role == "all" and r[self.usermeta_variable_mapping['is_admin']]):
 			u = User()
 			u.username = r[self.usermeta_variable_mapping['username']]
-			u.is_admin = r[self.usermeta_variable_mapping['is_admin']]
+			try:
+				u.is_admin = r[self.usermeta_variable_mapping['is_admin']]
+			except:
+				u.is_admin = False
 			u.email = r[self.usermeta_variable_mapping['email']]
 			u.fullname = r[self.usermeta_variable_mapping['fullname']]
 			u.cookie = access_token
@@ -180,7 +183,7 @@ class OAuth:
 					u = User()
 				if u and role == 'admin' and u.is_admin == True:
 					return function(*args, **kwargs)
-				elif u and role == 'all':
+				elif u and role == 'all' and u.is_admin != None:
 					return function(*args, **kwargs)
 				else:
 					return redirect(self.client_uri, 301)
